@@ -1,0 +1,3 @@
+[submodule "vendor/paint"]
+	path = vendor/paint
+	url = https://github.com/alphasights/paint.git
