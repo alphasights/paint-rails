@@ -6,17 +6,20 @@ namespace :paint do
   desc "Update Paint to module version"
   task :update do |task|
     if module_matches_bower_version
-      base_dir = "./vendor/assets"
+      assets_dir = "./vendor/assets"
+      rm_r(assets_dir, force: true)
 
-      rm_r(base_dir, force: true)
-      mkdir_p("#{base_dir}/stylesheets")
-      mkdir_p("#{base_dir}/images")
+      mkdir_p("#{assets_dir}/stylesheets")
+      mkdir_p("#{assets_dir}/images")
+
+      cp("./vendor/paint/bower.json", "#{assets_dir}/stylesheets")
+      Dir.chdir("#{assets_dir}/stylesheets") { sh("bower install") && rm("bower.json") }
 
       images = Rake::FileList["./vendor/paint/images/**"]
       stylesheets = Rake::FileList["./vendor/paint/**"].exclude(/\/images/, /\.json/, /\.md/)
 
-      cp_r(stylesheets, "#{base_dir}/stylesheets")
-      cp_r(images, "#{base_dir}/images")
+      cp_r(stylesheets, "#{assets_dir}/stylesheets")
+      cp_r(images, "#{assets_dir}/images")
     else
       puts "Update module version (./lib/paint-rails/version.rb) to match bower.json version"
     end
