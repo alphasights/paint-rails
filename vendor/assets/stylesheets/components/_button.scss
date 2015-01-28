@@ -1,0 +1,61 @@
+@import "icon";
+
+$button-base-background-color: $white !default;
+$button-base-text-color: $jumbo !default;
+$button-icon-size: 28px !default;
+$button-primary-background-color: #008fd9 !default;
+
+$include-html-paint-button: true !default;
+
+@mixin button-icon($icon) {
+  @extend %button-icon;
+  @include icon($icon);
+}
+
+%button-icon {
+  margin-bottom: 0;
+  padding: 0;
+
+  &:before {
+    display: block;
+    line-height: $button-icon-size;
+    width: $button-icon-size;
+  }
+}
+
+%button {
+  @include button-base;
+
+  background-color: $button-base-background-color;
+  color: $button-base-text-color;
+  border: 1px solid lighten($button-base-text-color, 20%);
+  border-radius: $global-radius;
+
+  &:hover {
+    color: darken($button-base-text-color, 20%);
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+%button-primary {
+  @include button(
+    $bg: $button-primary-background-color,
+    $padding: $column-gutter / 2,
+    $radius: $global-radius
+  );
+
+  font-size: $small-font-size;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+}
+
+@include exports("paint-button") {
+  @if $include-html-paint-button {
+    button {
+      @extend %button;
+    }
+  }
+}

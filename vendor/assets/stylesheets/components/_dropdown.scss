@@ -1,0 +1,27 @@
+%dropdown {
+  @include dropdown-container(list, bottom);
+
+  padding-left: 0;
+
+  &.drop-#{$opposite-direction} {
+    @include dropdown-container(list, #{$default-float});
+  }
+
+  &.drop-#{$default-float} {
+    @include dropdown-container(list, #{$opposite-direction});
+  }
+
+  &.drop-top {
+    @include dropdown-container(list, top);
+  }
+
+  &.drop-#{$opposite-direction},
+  &.drop-#{$default-float},
+  &.drop-top {
+    width: auto;
+  }
+
+  li {
+    @include dropdown-style;
+  }
+}

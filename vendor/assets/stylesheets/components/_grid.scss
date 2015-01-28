@@ -1,0 +1,37 @@
+$grid-prefix: 'grid-column';
+$grid-responsive-media-queries: $small-up, $medium-up, $large-up, $xlarge-up, $xxlarge-up;
+$grid-responsive-sizes: 'small', 'medium', 'large', 'xlarge', 'xxlarge';
+
+@mixin grid-column-placeholders($prefix: $grid-prefix) {
+  @for $i from 1 through $total-columns {
+    %#{$prefix}-#{$i} {
+      @include grid-column($columns: $i, $collapse: false, $float: true);
+
+      &:last-child {
+        @include grid-column($columns: $i, $collapse: false, $float: true, $last-column: true);
+      }
+    }
+
+    %#{$prefix}-#{$i}-centered {
+      @include grid-column($columns: $i, $collapse: false, $float: false, $center: true);
+    }
+  }
+}
+
+@include grid-column-placeholders;
+
+// Generate placeholders for different media queries, e.g. %grid-column-small-4
+
+@for $i from 1 through length($grid-responsive-media-queries) {
+  $query: nth($grid-responsive-media-queries, $i);
+  $size: nth($grid-responsive-sizes, $i);
+  $prefix: '#{$grid-prefix}-#{$size}';
+
+  @media #{$query} {
+    @include grid-column-placeholders($prefix: $prefix);
+  }
+}
+
+%grid-row {
+  @include grid-row;
+}
