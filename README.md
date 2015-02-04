@@ -22,6 +22,15 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+### Update Paint Version
+1. Clone paint-rails
+2. git submodule init
+3. git submodule update
+4. In paint directory, checkout master branch and 'git pull' changes.
+5. Update lib/paint-rails/version.rb with updated version number.
+6. In root directory, run 'bundle exec rake paint:update'
+7. Commit changes and push, make PR.
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/paint-rails/fork )
