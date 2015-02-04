@@ -26,11 +26,10 @@ TODO: Write usage instructions here
 1. Clone paint-rails
 2. git submodule init
 3. git submodule update
-4. Update vendor/paint/bower.json to reflect updated version.
-5. In paint directory, checkout master branch and 'git pull' changes.
+4. In paint directory, checkout master branch and 'git pull' changes.
+5. Update lib/paint-rails/version.rb with updated version number.
 6. In root directory, run 'bundle exec rake paint:update'
-7. Update lib/paint-rails/version.rb with updated version number.
-8. Commit changes and push, make PR.
+7. Commit changes and push, make PR.
 
 ## Contributing
 
