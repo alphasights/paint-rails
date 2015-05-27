@@ -1,6 +1,6 @@
 # Paint::Rails
 
-TODO: Write a gem description
+This is a gem package for [Paint](https://github.com/alphasights/paint) which is a sass placeholder library for UI components.
 
 ## Installation
 
@@ -20,16 +20,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Here are the [instructions on how to use it](http://as-canvas.divshot.io/)
+
 
 ### Update Paint Version
 1. Clone paint-rails
 2. git submodule init
 3. git submodule update
-4. In paint directory, checkout master branch and 'git pull' changes.
+4. In /vendor/paint directory, checkout master branch and 'git pull' changes.
 5. Update lib/paint-rails/version.rb with updated version number.
 6. In root directory, run 'bundle exec rake paint:update'
-7. Commit changes and push, make PR.
+7. Commit changes and push, make a new PR.
 
 ## Contributing
 
