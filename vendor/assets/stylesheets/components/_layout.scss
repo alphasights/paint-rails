@@ -8,6 +8,7 @@ $layout-sidebar-footer-avatar-selector: '.avatar' !default;
 $layout-sidebar-footer-title-selector: '.name' !default;
 $layout-sidebar-footer-actions-selector: '.actions' !default;
 $layout-sidebar-footer-actions-icon: cog !default;
+$layout-sidebar-collapse-duration: .325s;
 $layout-sidebar-header-height: 60px !default;
 $layout-sidebar-header-logo-height: $layout-sidebar-header-height * .5 !default;
 $layout-sidebar-header-selector: '> header' !default;
@@ -36,6 +37,9 @@ $layout-sidebar-nav-title-height: rem-calc(40) !default;
 $layout-sidebar-nav-title-text-color: darken($layout-sidebar-nav-text-color, 50%) !default;
 $layout-sidebar-nav-width-collapsed: $layout-sidebar-nav-link-icon-width + 2 * $layout-sidebar-nav-padding !default;
 $layout-sidebar-nav-width: rem-calc(260) !default;
+$layout-sidebar-nav-bubble-selector: '.bubble' !default;
+$layout-sidebar-nav-bubble-width: rem-calc(24) !default;
+$layout-sidebar-nav-bubble-background-color: $steel !default;
 $layout-sidebar-selector: '.sidebar' !default;
 
 $include-html-paint-layout: true !default;
@@ -77,6 +81,9 @@ $include-html-paint-layout: true !default;
     font-weight: $layout-sidebar-font-weight;
     height: 100%;
     position: relative;
+    transform: translate3d(0, 0, 0);
+    transition: width $layout-sidebar-collapse-duration cubic-bezier(.78, .01, .27, 1);
+    transition-delay: .015s;
     width: $layout-sidebar-nav-width;
 
     @if $layout-sidebar-include-header {
@@ -99,6 +106,11 @@ $include-html-paint-layout: true !default;
           display: inline-block;
           -webkit-font-smoothing: $body-font-smoothing;
           margin: 0;
+          opacity: 1;
+          transition: 
+            opacity $layout-sidebar-collapse-duration / 2 ease-in,
+            width $layout-sidebar-collapse-duration / 1.5 ease-in;
+          width: auto;
         }
       }
     }
@@ -184,7 +196,6 @@ $include-html-paint-layout: true !default;
 
     .toggle-collapse {
       color: $layout-sidebar-nav-link-text-color;
-      display: inline-block;
       float: right;
       line-height: $layout-sidebar-nav-title-height;
 
@@ -235,6 +246,10 @@ $include-html-paint-layout: true !default;
           color: lighten($layout-sidebar-nav-link-active-text-color, 5%);
         }
       }
+
+      > span {
+        transition: opacity $layout-sidebar-collapse-duration / 2 ease-in;
+      }
     }
 
     i {
@@ -249,13 +264,28 @@ $include-html-paint-layout: true !default;
       width: $layout-sidebar-nav-link-icon-width;
     }
 
+    #{$layout-sidebar-nav-bubble-selector} {
+      background-color: $layout-sidebar-nav-bubble-background-color;
+      border-radius: $global-rounded;
+      color: $white;
+      float: right;
+      font-size: $small-font-size * .8;
+      font-weight: $font-weight-extrabold;
+      letter-spacing: -1px;
+      line-height: $layout-sidebar-nav-bubble-width;
+      margin-right: $layout-sidebar-nav-link-icon-padding / 2;
+      margin-top: ($layout-sidebar-nav-link-height - $layout-sidebar-nav-bubble-width) / 2;
+      min-width: $layout-sidebar-nav-bubble-width;
+      text-align: center;
+    }
+
     #{$subnav-selector} {
       background-color: darken($layout-sidebar-nav-background-color, 5%);
       border-left: solid 3px lighten($layout-sidebar-nav-background-color, 5%);
       margin: 0;
       padding: 0;
 
-      a span {
+      a span:not(#{$layout-sidebar-nav-bubble-selector}) {
         color: darken($layout-sidebar-nav-link-text-color, 10%);
       }
 
@@ -271,13 +301,27 @@ $include-html-paint-layout: true !default;
   width: $layout-sidebar-nav-width-collapsed;
 
   #{$layout-sidebar-nav-selector} #{$layout-sidebar-nav-list-selector} a {
+    position: relative;
+
     > i {
       margin-right: 0;
     }
 
-    > span {
-      display: none;
+    > span:not(#{$layout-sidebar-nav-bubble-selector}) {
+      opacity: 0;
+      width: 0;
     }
+
+    > #{$layout-sidebar-nav-bubble-selector} {
+      left: $layout-sidebar-nav-link-icon-width;
+      position: absolute;
+      top: - $layout-sidebar-nav-link-icon-padding / 2;
+    }
+  }
+
+  h1 {
+    opacity: 0;
+    width: 0;
   }
 
   .toggle-collapse {
@@ -289,7 +333,7 @@ $include-html-paint-layout: true !default;
     }
   }
 
-  header {
+  #{$layout-sidebar-nav-selector} header {
     h1 {
       display: none;
     }
