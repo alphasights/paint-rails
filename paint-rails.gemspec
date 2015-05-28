@@ -6,8 +6,8 @@ require 'paint-rails/version'
 Gem::Specification.new do |spec|
   spec.name          = "paint-rails"
   spec.version       = Paint::Rails::VERSION
-  spec.authors       = ["Damon Aw"]
-  spec.email         = ["daemonsy@gmail.com"]
+  spec.authors       = ["Damon Aw", "Carlos PerezPrigo"]
+  spec.email         = ["daemonsy@gmail.com", "carlosepp@gmail.com"]
   spec.summary       = %q{Rails Integration for Paint}
   spec.homepage      = "http://engineering.alphasights.com"
   spec.license       = "MIT"
