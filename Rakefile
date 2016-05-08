@@ -9,7 +9,7 @@ namespace :paint do
       assets_dir = "./vendor/assets"
       rm_r(assets_dir, force: true)
 
-      mkdir_p("#{assets_dir}/stylesheets")
+      mkdir_p("#{assets_dir}/stylesheets/paint")
       mkdir_p("#{assets_dir}/images")
 
       cp("./vendor/paint/bower.json", "#{assets_dir}/stylesheets")
@@ -18,7 +18,7 @@ namespace :paint do
       images = Rake::FileList["./vendor/paint/images/**"]
       stylesheets = Rake::FileList["./vendor/paint/**"].exclude(/\/images/, /\.json/, /\.md/)
 
-      cp_r(stylesheets, "#{assets_dir}/stylesheets")
+      cp_r(stylesheets, "#{assets_dir}/stylesheets/paint")
       cp_r(images, "#{assets_dir}/images")
     else
       puts "Update module version (./lib/paint-rails/version.rb) to match bower.json version"
