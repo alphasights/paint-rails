@@ -1,7 +1,11 @@
-@import 'icon';
+////
+/// Buttons Component
+/// @group button
+/// @since v0.9.0
+////
 
-$button-base-background-color: $white !default;
-$button-base-text-color: $jumbo !default;
+$button-base-background-color: color(white) !default;
+$button-base-text-color: color(gray, jumbo) !default;
 $button-base-padding: 15px !default;
 $button-icon-size: 28px !default;
 $button-disabled-transparency: .4 !default;
@@ -10,21 +14,35 @@ $button-tiny-height: 24px !default;
 $button-small-height: 38px !default;
 $button-large-height: 50px !default;
 
-$button-colours: (
-  primary: #008fd9,
-  secondary: $secondary-color,
-  error: $alert-color,
-  warning: $warning-color,
-  success: $success-color,
-  info: $info-color
+/// Default button styles
+
+$button-colors: (
+  base: color(text, small),
+  primary: color(link),
+  secondary: color(secondary),
+  alert: color(alert),
+  error: color(alert),
+  warning: color(warning),
+  success: color(success),
+  info: color(info)
 );
 
 $include-html-paint-button: true !default;
+
+/// Generate a button with icon
+/// @param {String} $icon - The icon name
+/// @example scss
+///   .dasboard-button {
+///     @include button-icon(dashboard);
+///   }
 
 @mixin button-icon($icon) {
   @extend %button-icon;
   @include icon($icon);
 }
+
+/// Disabled button styles
+/// @access private
 
 @mixin button-disabled() {
   background-color: transparentize(
@@ -48,8 +66,10 @@ $include-html-paint-button: true !default;
   }
 }
 
+/// Button with icon placeholder
+/// @access private
+
 %button-icon {
-  margin-bottom: 0;
   padding: 0;
 
   &:before {
@@ -59,16 +79,54 @@ $include-html-paint-button: true !default;
   }
 }
 
-%button {
-  @include button-base;
-  @include single-transition(color, 150ms, ease);
+/// Button resets
 
+#{$all-buttons} {
+  appearance: none;
+  border: 0;
+  border-radius: $global-radius;
+  cursor: pointer;
+  display: inline-block;
+  font-family: $base-font-family;
+  font-size: $small-font-size;
+  -webkit-font-smoothing: $heading-font-smoothing;
+  font-weight: $font-weight-normal;
+  line-height: $base-line-height;
+  padding: $small-spacing $base-spacing;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color $global-transition-duration / 2 ease;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus {
+    background-color: color(border, light);
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .5;
+
+    &:hover {
+      background-color: color(border);
+    }
+  }
+}
+
+/// Default button styles
+
+%button {
   background-color: $button-base-background-color;
   border: 1px solid lighten($button-base-text-color, 20%);
   border-radius: $global-radius;
   color: $button-base-text-color;
+  transition: color $global-transition-duration / 2 ease;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: darken($button-base-text-color, 20%);
   }
 
@@ -83,66 +141,116 @@ $include-html-paint-button: true !default;
   }
 }
 
+/// Solid button styles
+/// @access private
+
+@mixin button-solid(
+  $bg: color(white),
+  $color: color(primary)
+) {
+  background-color: $bg;
+  border-radius: $global-radius;
+  border: 1px solid $color;
+  color: $color;
+  font-size: $small-font-size;
+  font-weight: $font-weight-bold;
+  padding: $button-base-padding;
+  text-transform: uppercase;
+
+  &:focus {
+    background-color: $bg;
+    color: $color;
+  }
+
+  &:hover {
+    background-color: $color;
+    border-color: $bg;
+    color: $bg;
+  }
+}
+
+/// Generate all button styles placeholders
+/// @access private
+
 @mixin button-color-placeholders {
-  @each $type, $button-color in $button-colours {
+  @each $type, $button-color in $button-colors {
     %button-#{$type} {
-      @include button(
-        $bg: $white,
-        $radius: $global-radius,
-        $bg-hover: $button-color,
-        $border-color: $button-color
-      );
+      @include button-solid($color: $button-color);
+    }
 
-      border: 1px solid $button-color;
-      color: $button-color;
-      font-size: $small-font-size;
-      font-weight: $font-weight-bold;
-      margin-bottom: 0;
-      padding: $button-base-padding;
-      text-transform: uppercase;
+    %button-#{$type}-inverted {
+      @include button-solid($bg: $button-color, $color: contrast($button-color, $dark: color(text)));
 
-      &:focus {
-        background-color: $white;
-        color: $button-color;
-      }
-
-      &:hover {
-        color: $white;
-      }
+      border-color: transparent;
     }
   }
 }
+
+/// Tiny button styles
+/// @require {placeholder} button
 
 %button-tiny {
   line-height: $button-tiny-height;
   padding: 0 $button-base-padding / 2;
 }
 
+/// Small button styles
+/// @require {placeholder} button
+
 %button-small {
   line-height: $button-small-height;
   padding: 0 $button-base-padding / 2;
 }
+
+/// Large button styles
+/// @require {placeholder} button
 
 %button-large {
   line-height: $button-large-height;
   padding: 0 $button-base-padding * 2;
 }
 
+/// Rounded button style
+/// @require {placeholder} button
+
+%button-rounded {
+  border-radius: $global-rounded;
+}
+
+/// Button Group
+///
+/// @example scss
+/// .button-group {
+///   @extend %button-group;
+/// }
+///
+/// @example
+///   <ul class="button-group">
+///     <li><button class="cog"></button></li>
+///     <li><button class="dashboard">Dashboard</button></li>
+///     <li><button class="clock"></button></li>
+///   </ul>
+
 %button-group {
-  @include button-group-container;
+  @include clearfix();
 
   display: inline-block;
+  list-style: none;
+  margin: 0;
+  white-space: nowrap;
 
   &:not(:first-child) {
-    padding-left: $button-base-padding;
+    padding-left: $button-base-padding / 2;
   }
 
   > li {
-    @include button-group-style($radius: $global-radius, $float: null);
+    display: inline-block;
+    margin: 0 -2px 0 -1px;
 
     button {
-      border-color: $global-section-border-color;
-      border-left: 0;
+      border-color: color(border);
+      border-radius: 0;
+      border-right: 0;
       line-height: $button-icon-size;
       padding: 0 $button-base-padding;
 
@@ -155,9 +263,28 @@ $include-html-paint-button: true !default;
       }
     }
 
-    &:first-child button {
-      border-left: solid 1px $global-section-border-color;
+    &:first-child {
+      margin-left: 0;
+
+      &,
+      button {
+        @include border-left-radius($global-radius);
+      }
     }
+
+    &:last-child {
+      margin-right: 0;
+
+      &,
+      button {
+        @include border-right-radius($global-radius);
+      }
+
+      button {
+        border-right: solid 1px color(border);
+      }
+    }
+
   }
 }
 
