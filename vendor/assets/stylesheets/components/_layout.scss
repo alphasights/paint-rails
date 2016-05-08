@@ -1,3 +1,10 @@
+////
+/// Layout and sidebar Component.
+/// @group layout
+/// @since v0.8.5
+/// @deprecated from 0.9.0
+////
+
 $layout-content-selector: '> .content' !default;
 $layout-content-wrapper-selector: 'main' !default;
 $layout-main-selector: '.application' !default;
@@ -8,7 +15,7 @@ $layout-sidebar-footer-avatar-selector: '.avatar' !default;
 $layout-sidebar-footer-title-selector: '.name' !default;
 $layout-sidebar-footer-actions-selector: '.actions' !default;
 $layout-sidebar-footer-actions-icon: cog !default;
-$layout-sidebar-collapse-duration: .325s;
+$layout-sidebar-collapse-duration: $global-transition-duration !default;
 $layout-sidebar-header-height: 60px !default;
 $layout-sidebar-header-logo-height: $layout-sidebar-header-height * .5 !default;
 $layout-sidebar-header-selector: '> header' !default;
@@ -51,6 +58,9 @@ $include-html-paint-layout: true !default;
   text-transform: uppercase;
 }
 
+/// Sidebar navigation icons generator
+/// @access private
+
 @mixin layout-navigation-icons {
   @for $i from 1 through length($layout-sidebar-nav-classes) {
     $class-name: nth($layout-sidebar-nav-classes, $i);
@@ -61,6 +71,8 @@ $include-html-paint-layout: true !default;
     }
   }
 }
+
+/// Layout sidebar
 
 @mixin layout-sidebar {
   $nav-top-margin: 0;
@@ -81,8 +93,7 @@ $include-html-paint-layout: true !default;
     font-weight: $layout-sidebar-font-weight;
     height: 100%;
     position: relative;
-    transform: translate3d(0, 0, 0);
-    transition: width $layout-sidebar-collapse-duration cubic-bezier(.78, .01, .27, 1);
+    transition: width $layout-sidebar-collapse-duration $global-transition-easing;
     transition-delay: .015s;
     width: $layout-sidebar-nav-width;
 
@@ -148,6 +159,22 @@ $include-html-paint-layout: true !default;
   }
 }
 
+/// Global application layout styles
+/// 
+/// @example - Default Usage
+///   <body>
+///     <div class="application">
+///       <div class="sidebar">
+///         //...
+///       </div>
+///       <main>
+///         <div class="content">
+///           //...
+///         </div>
+///       </main>
+///     </div>
+///   </body>
+
 @mixin layout {
   html,
   body {
@@ -171,6 +198,9 @@ $include-html-paint-layout: true !default;
   }
 }
 
+/// Layout sidebar navigation styles
+/// @access private
+
 @mixin layout-sidebar-nav($nav-bottom-margin: 0, $nav-top-margin: 0, $subnav-selector: '> li > ul') {
   bottom: $nav-bottom-margin;
   left: 0;
@@ -182,22 +212,33 @@ $include-html-paint-layout: true !default;
   header {
     background-color: $layout-sidebar-nav-title-background-color;
     color: $layout-sidebar-nav-title-text-color;
-    line-height: $layout-sidebar-nav-title-height;
+    height: $layout-sidebar-nav-title-height;
+    overflow: hidden;
     padding: 0 $layout-sidebar-nav-padding;
+    position: relative;
     white-space: nowrap;
 
     h1 {
       @extend %layout-sidebar-heading;
 
       color: $layout-sidebar-nav-link-text-color;
-      display: inline-block;
+      line-height: $layout-sidebar-nav-title-height;
       margin: 0;
+      transform: translate(0, 0);
+      transition: 
+        transform $layout-sidebar-collapse-duration $global-transition-easing,
+        opacity $layout-sidebar-collapse-duration ease-out;
+      transition-delay: $global-transition-easing;
+      width: 80%;
     }
 
     .toggle-collapse {
       color: $layout-sidebar-nav-link-text-color;
-      float: right;
+      height: $layout-sidebar-nav-title-height;
       line-height: $layout-sidebar-nav-title-height;
+      position: absolute;
+      right: $layout-sidebar-nav-padding;
+      z-index: 1;
 
       button {
         @include icon(chevron-circle-left);
@@ -214,6 +255,7 @@ $include-html-paint-layout: true !default;
 
     list-style-type: none;
     margin: 0;
+    overflow: hidden;
     padding: 0;
 
     a {
@@ -297,6 +339,9 @@ $include-html-paint-layout: true !default;
   }
 }
 
+/// Layout sidebar collapsed navigation styles
+/// @access private
+
 @mixin layout-sidebar-nav-collapsed {
   width: $layout-sidebar-nav-width-collapsed;
 
@@ -321,7 +366,6 @@ $include-html-paint-layout: true !default;
 
   h1 {
     opacity: 0;
-    width: 0;
   }
 
   .toggle-collapse {
@@ -335,20 +379,19 @@ $include-html-paint-layout: true !default;
 
   #{$layout-sidebar-nav-selector} header {
     h1 {
-      display: none;
+      transform: translate(-200%, 0);
     }
 
-    .toggle-collapse {
-      float: none;
+    .toggle-collapse button {
+      @include icon(chevron-circle-right);
 
-      button {
-        @include icon(chevron-circle-right);
-
-        width: $layout-sidebar-nav-link-icon-width;
-      }
+      width: $layout-sidebar-nav-link-icon-width;
     }
   }
 }
+
+/// Sidebar navigation footer with actions
+/// @access private
 
 @mixin layout-sidebar-footer-with-actions {
   #{$layout-sidebar-footer-avatar-selector} {
@@ -384,6 +427,9 @@ $include-html-paint-layout: true !default;
     }
   }
 }
+
+/// Sidebar navigation collapsed footer with actions
+/// @access private
 
 @mixin layout-sidebar-footer-with-actions-collapsed {
   #{$layout-sidebar-footer-avatar-selector},

@@ -1,3 +1,9 @@
+////
+/// Paint Global Imports
+////
+
+/// Import dependencies
+
 @import 'bower_components/foundation/scss/foundation/functions';
 
 @import 'globals/functions';
@@ -9,12 +15,15 @@
 
 @import 'globals/mixins';
 
+@import 'components/color';
 @import 'components/button';
 @import 'components/grid';
 @import 'components/typography';
 @import 'components/icon';
+@import 'components/notification';
 @import 'components/label';
 @import 'components/layout';
+@import 'components/navigation';
 @import 'components/table';
 @import 'components/progress-bar';
 @import 'components/side-panel';
@@ -24,3 +33,5 @@
 @import 'components/quick-jump';
 @import 'components/panel';
 @import 'components/flip-panel';
+@import 'components/modal';
+@import 'components/tab';

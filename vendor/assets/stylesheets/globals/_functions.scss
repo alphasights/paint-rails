@@ -47,7 +47,7 @@
 }
 
 @function brightness($color) {
-  @return ((red($color) * .299) + (green($color) * .587) + (blue($color) * .114)) / 255 * 100%;
+  @return ((red($color) * .229) + (green($color) * .499) + (blue($color) * .199)) / 255 * 100%;
 }
 
 @function contrast(
@@ -59,10 +59,10 @@
   $dark-text-brightness: brightness($dark);
   $light-text-brightness: brightness($light);
 
+  $output: $dark;
+
   @if abs($color-brightness - $light-text-brightness) > abs($color-brightness - $dark-text-brightness) {
     $output: $light;
-  } @else {
-    $output: $dark;
   }
 
   @return $output;
