@@ -1,19 +1,20 @@
-@mixin detached-border($color: $info-color, $radius: $global-radius) {
+@mixin detached-border($color: color(info), $radius: $global-radius) {
   border-radius: $radius;
-  box-shadow: 0 0 0 1px $color, 0 0 0 1px $white inset;
+  box-shadow: 0 0 0 1px $color, 0 0 0 1px color(white) inset;
   padding: 1px;
 }
 
 @mixin overlay($position: absolute, $z-index: 100) {
-  @include single-transition(background-color, 150ms, linear);
-
+  background-color: transparent;
   bottom: 0;
   left: 0;
+  overflow-x: hidden;
   overflow-y: auto;
   pointer-events: none;
   position: $position;
   right: 0;
   top: 0;
+  transition: background-color $global-transition-duration ease;
   z-index: $z-index;
 
   > * {
